@@ -145,16 +145,7 @@ function isDateInPeriod(date, period) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(date) {
-  const currDate = new Date(date);
-  const month = currDate.getUTCMonth() + 1;
-  const days = currDate.getUTCDate();
-  const year = currDate.getUTCFullYear();
-  const hours = currDate.getUTCHours();
-  const minutes = currDate.getUTCMinutes().toString().padStart(2, '0');
-  const seconds = currDate.getUTCSeconds().toString().padStart(2, '0');
-  return `${month}/${days}/${year}, ${hours % 12 ? hours % 12 : 12}:${minutes}:${seconds} ${hours >= 12 ? 'PM' : 'AM'}`;
-}
+function formatDate(date) {}
 
 /**
  * Returns the total number of weekend days (Saturdays and Sundays) in a specified month and year.

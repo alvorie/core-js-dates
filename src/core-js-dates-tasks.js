@@ -145,7 +145,16 @@ function isDateInPeriod(date, period) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(/* date */) {}
+function formatDate(date) {
+  const currDate = new Date(date);
+  const month = currDate.getUTCMonth() + 1;
+  const days = currDate.getUTCDate();
+  const year = currDate.getUTCFullYear();
+  const hours = currDate.getUTCHours();
+  const minutes = currDate.getUTCMinutes().toString().padStart(2, '0');
+  const seconds = currDate.getUTCSeconds().toString().padStart(2, '0');
+  return `${month}/${days}/${year}, ${hours % 12 ? hours % 12 : 12}:${minutes}:${seconds} ${hours >= 12 ? 'PM' : 'AM'}`;
+}
 
 /**
  * Returns the total number of weekend days (Saturdays and Sundays) in a specified month and year.
@@ -184,22 +193,7 @@ function getCountWeekendsInMonth(month, year) {
  * Date(2024, 0, 31) => 5
  * Date(2024, 1, 23) => 8
  */
-function getWeekNumberByDate(date) {
-  const week = 24 * 60 * 60 * 1000 * 7;
-  const yearStartDate = new Date(Date(date.getFullYear(), 0, 1));
-
-  const tillFirstThursday = Math.abs(4 - yearStartDate.getDay() || 7);
-  const firstThursday = new Date(
-    Date.UTC(date.getFullYear(), 0, tillFirstThursday + 1)
-  );
-
-  const firstMonday = new Date(firstThursday);
-  firstMonday.setDate(firstThursday.getDate() - 3);
-
-  const currDate = new Date(date);
-
-  return Math.ceil(Math.abs(firstMonday - currDate) / week);
-}
+function getWeekNumberByDate(/* date */) {}
 
 /**
  * Returns the date of the next Friday the 13th from a given date.

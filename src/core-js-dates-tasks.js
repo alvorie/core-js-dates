@@ -268,25 +268,33 @@ function getQuarter(date) {
  * { start: '01-01-2024', end: '10-01-2024' }, 1, 1 => ['01-01-2024', '03-01-2024', '05-01-2024', '07-01-2024', '09-01-2024']
  */
 function getWorkSchedule(period, countWorkDays, countOffDays) {
-  const currDate = new Date(period.start);
-  const endDate = new Date(period.end);
-  const ans = [];
+  const parseDate = (dateStr) => {
+    const [day, month, year] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  };
 
-  ans.push(currDate);
+  const formatDateDash = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
-  while (currDate < endDate) {
-    currDate.setDate(currDate.getDate() + countWorkDays);
-    if (currDate < endDate) {
-      ans.push(currDate);
+  const startDate = parseDate(period.start);
+  const endDate = parseDate(period.end);
+  const schedule = [];
+
+  const currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    for (let i = 0; i < countWorkDays && currentDate <= endDate; i += 1) {
+      schedule.push(formatDateDash(new Date(currentDate)));
+      currentDate.setDate(currentDate.getDate() + 1);
     }
-
-    currDate.setDate(currDate.getDate() + countOffDays);
-    if (currDate < endDate) {
-      ans.push(currDate);
-    }
+    currentDate.setDate(currentDate.getDate() + countOffDays);
   }
 
-  return ans;
+  return schedule;
 }
 
 /**
